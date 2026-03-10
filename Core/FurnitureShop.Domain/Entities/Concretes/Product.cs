@@ -11,7 +11,8 @@ public class Product:BaseEntity
 {
     public decimal Price { get; set; }
     public int CategoryId { get; set; }
-    public FurnitureCategory Category { get; set; }
+    public int FurnitureCategoryId { get; set; }
+    public FurnitureCategory FurnitureCategory { get; set; }
     public string Material { get; set; }
     public string  Colors { get; set; }       
     public bool IsFeatured { get; set; }

@@ -15,6 +15,7 @@ public class Collection:BaseEntity
     public string ImagesUrl { get; set; }   
     public int CategoryId { get; set; }
     public CollectionCategory CollectionCategory { get; set; }
+    public int CollectionCategoryId { get; set; }
     public decimal TotalPrice { get; set; }
     public decimal? DiscountPrice { get; set; }
     public int DisplayOrder { get; set; }

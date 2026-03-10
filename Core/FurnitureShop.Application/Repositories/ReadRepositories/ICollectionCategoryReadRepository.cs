@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Application.Repsitories.ReadRepositories;
 
-public interface ICategoryReadRepository:IGenericReadRepository<Category>
-{
-    Task<IEnumerable<FurnitureCategory>> GetFurnitureCategoriesAsync();
-    Task<IEnumerable<CollectionCategory>> GetRoomCategoriesAsync();
+public interface ICollectionCategoryReadRepository:IGenericReadRepository<CollectionCategory>
+{    
+    Task<IEnumerable<CollectionCategory>> GetRoomCategoriesAsync(); // bu method ise sadece collection categoryleri getirir
 
 }
 

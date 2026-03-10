@@ -9,6 +9,7 @@
         public string BadgeText { get; set; }
 
         public int Id { get; set; }
+        public HeroSection HeroSection { get; set; }
         public int HeroSectionId { get; set; }
         public string Lang { get; set; }     
         public HeroSection heroSection { get; set; }

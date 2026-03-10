@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FurnitureShop.Application.Services.Abstracts
+namespace FurnitureShop.Application.Services.Abstracts;
+
+public interface ITokenService
 {
-    public interface ITokenService
-    {
-        string CreateToken(AppUser user);
-    }
+    string CreateToken(AppUser user);
 }

@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Application.Repsitories.WriteRepositories;
 
-public interface ICollectionCategoryWriteRepository :IGenericWriteRepository<Category>
+public interface ICollectionCategoryWriteRepository :IGenericWriteRepository<CollectionCategory>
 {
 }

@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FurnitureShop.Application.Services.Abstracts
+namespace FurnitureShop.Application.Services.Abstracts;
+
+internal interface IProductService
 {
-    internal interface IProductService
-    {
-    }
 }
