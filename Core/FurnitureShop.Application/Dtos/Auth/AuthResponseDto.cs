@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Application.Dtos.Auth
 {
-    public class AuthResponseDto //bu class 
+    public class AuthResponseDto
     {
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }

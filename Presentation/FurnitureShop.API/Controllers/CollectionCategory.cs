@@ -20,6 +20,6 @@ public class CollectionController : ControllerBase
     public async Task<IActionResult> GetCollections() => Ok(await _collectionService.GetAllAsync());
 
     [HttpGet("categories")]
-    public async Task<IActionResult> GetCategories(string lang = "az")
+    public async Task<IActionResult> GetCategories([FromBody] string lang = "az")
         => Ok(await _categoryService.GetAllWithTranslationsAsync(lang));
 }

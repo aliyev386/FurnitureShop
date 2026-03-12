@@ -23,21 +23,21 @@ public class FurnitureCategoriesController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(FurnitureCategory category)
+    public async Task<IActionResult> Create([FromBody] FurnitureCategory category)
     {
         await _furnitureCategoryService.CreateAsync(category);
         return Ok(new { message = "Furniture category created successfully", id = category.Id });
     }
 
     [HttpPut]
-    public async Task<IActionResult> Update(FurnitureCategory category)
+    public async Task<IActionResult> Update([FromBody] FurnitureCategory category)
     {
         await _furnitureCategoryService.UpdateAsync(category);
         return Ok("Updated successfully");
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete([FromBody] int id)
     {
         await _furnitureCategoryService.DeleteAsync(id);
         return Ok("Deleted successfully");

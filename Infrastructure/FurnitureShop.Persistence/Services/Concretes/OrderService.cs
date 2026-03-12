@@ -28,7 +28,7 @@ public class OrderService : IOrderService
     public async Task CreateOrderAsync(Order order)
     {
         order.CreatedAt = DateTime.UtcNow;
-        order.Status = OrderStatus.Pending;
+        order.Status = OrderStatus.Pending.ToString();
         await _writeRepo.AddAsync(order);
         await _writeRepo.SaveChangeAsync();
     }
@@ -38,7 +38,7 @@ public class OrderService : IOrderService
         var order = await _readRepo.GetByIdAsync(id);
         if (order != null)
         {
-            order.Status = OrderStatus.Cancelled;
+            order.Status = OrderStatus.Cancelled.ToString();
             _writeRepo.Update(order);
             await _writeRepo.SaveChangeAsync();
         }

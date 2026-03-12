@@ -1,5 +1,8 @@
-﻿using FurnitureShop.Application.Services.Abstracts;
+﻿using FurnitureShop.Application.Repositories.ReadRepositories;
+using FurnitureShop.Application.Repsitories.ReadRepositories;
+using FurnitureShop.Application.Services.Abstracts;
 using FurnitureShop.Persistence.Datas;
+using FurnitureShop.Persistence.Repositories.ReadRepositories;
 using FurnitureShop.Persistence.Services.Concretes;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,14 +38,20 @@ public static class RegisterService
     }
     private static void AddRepositoriesExtention(IServiceCollection services)
     {
-
-
+        services.AddScoped<IProductReadRepository, ProductReadRepository>();
+        services.AddScoped<IOrderReadRepository, OrderReadRepository>();
+        services.AddScoped<ICollectionReadRepository, CollectionReadRepository>();
+        services.AddScoped<ICollectionCategoryReadRepository, CollectionCategoryReadRepository>();
+        services.AddScoped<IFurnitureCategoryReadRepository, FurnitureCategoryReadRepository>();
     }
 
     private static void AddServiceExtention(IServiceCollection services)
     {
-        //
-
-
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<ICollectionService, CollectionService>();
+        services.AddScoped<ICollectionCategoryService, CollectionCategoryService>();
+        services.AddScoped<IFurnitureCategoryService, FurnitureCategoryService>();
+        services.AddScoped<IAuthService, AuthService>();
     }
 }

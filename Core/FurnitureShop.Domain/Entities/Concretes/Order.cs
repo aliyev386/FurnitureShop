@@ -12,11 +12,8 @@ public class Order:BaseEntity
 {
     public string UserId { get; set; }
     public AppUser User { get; set; }
-    public string GuestName { get; set; }
-    public string GuestPhone { get; set; }
-    public string GuestEmail { get; set; }
-    public OrderType Type { get; set; }
-    public OrderStatus Status { get; set; }
+    public string Type { get; set; }
+    public string Status { get; set; }
     public decimal TotalPrice { get; set; }
     public string Notes { get; set; }
     public string DeliveryAddress { get; set; }

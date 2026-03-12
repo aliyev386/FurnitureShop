@@ -33,7 +33,6 @@ public class AppDbContext : IdentityDbContext<AppUser>
     {
         base.OnModelCreating(builder);
 
-        // ── Decimal tiplər ──────────────────────────────
         builder.Entity<Product>()
             .Property(p => p.Price)
             .HasColumnType("decimal(18,2)");
@@ -62,47 +61,40 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .Property(c => c.DiscountPercent)
             .HasColumnType("decimal(5,2)");
 
-        // ── Collection → Product (many-to-many) ─────────
         builder.Entity<Collection>()
             .HasMany(c => c.Products)
             .WithMany();
 
-        // ── Product → FurnitureCategory ──────────────────
         builder.Entity<Product>()
             .HasOne(p => p.FurnitureCategory)
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.FurnitureCategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ── Collection → CollectionCategory ─────────────
         builder.Entity<Collection>()
             .HasOne(c => c.CollectionCategory)
             .WithMany(cc => cc.Collections)
             .HasForeignKey(c => c.CollectionCategoryId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // ── Order → AppUser ──────────────────────────────
         builder.Entity<Order>()
             .HasOne(o => o.User)
             .WithMany(u => u.Orders)
             .HasForeignKey(o => o.UserId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        // ── OrderItem → Product ──────────────────────────
         builder.Entity<OrderItem>()
             .HasOne(oi => oi.Product)
             .WithMany()
             .HasForeignKey(oi => oi.ProductId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        // ── OrderItem → Collection ───────────────────────
         builder.Entity<OrderItem>()
             .HasOne(oi => oi.Collection)
             .WithMany()
             .HasForeignKey(oi => oi.CollectionId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        // ── Translations ─────────────────────────────────
         builder.Entity<ProductTranslation>()
             .HasOne(t => t.Product)
             .WithMany(p => p.Translations)
@@ -139,7 +131,6 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .HasForeignKey(t => t.CampaignId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // ── Unique: dil təkrarlanmasın ───────────────────
         builder.Entity<ProductTranslation>()
             .HasIndex(t => new { t.ProductId, t.Lang })
             .IsUnique();

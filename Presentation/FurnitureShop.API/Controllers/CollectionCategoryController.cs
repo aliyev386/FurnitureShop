@@ -15,28 +15,28 @@ public class CollectionCategoriesController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAll(string lang = "az")
+    public async Task<IActionResult> GetAll([FromBody] string lang = "az")
     {
         var categories = await _collectionCategoryService.GetAllWithTranslationsAsync(lang);
         return Ok(categories);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById(int id, string lang = "az")
+    public async Task<IActionResult> GetById([FromBody] int id, string lang = "az")
     {
         var category = await _collectionCategoryService.GetByIdAsync(id, lang);
         return category != null ? Ok(category) : NotFound();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CollectionCategory category)
+    public async Task<IActionResult> Create([FromBody] CollectionCategory category)
     {
         await _collectionCategoryService.CreateAsync(category);
         return Ok(new { message = "Collection category created successfully", id = category.Id });
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete([FromBody] int id)
     {
         await _collectionCategoryService.DeleteAsync(id);
         return Ok("Deleted successfully");
