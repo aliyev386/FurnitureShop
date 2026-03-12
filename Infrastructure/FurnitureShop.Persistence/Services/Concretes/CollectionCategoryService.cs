@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Application.Repsitories.Common;
 using FurnitureShop.Application.Repsitories.ReadRepositories;
+using FurnitureShop.Application.Repsitories.WriteRepositories;
 using FurnitureShop.Application.Services.Abstracts;
 using FurnitureShop.Domain.Entities.Concretes;
 using System;
@@ -12,11 +13,10 @@ namespace FurnitureShop.Persistence.Services.Concretes;
 public class CollectionCategoryService : ICollectionCategoryService
 {
     private readonly ICollectionCategoryReadRepository _readRepo;
-    private readonly IGenericWriteRepository<CollectionCategory> _writeRepo;
+    private readonly ICollectionCategoryWriteRepository _writeRepo;
 
     public CollectionCategoryService(
-        ICollectionCategoryReadRepository readRepo,
-        IGenericWriteRepository<CollectionCategory> writeRepo)
+        ICollectionCategoryReadRepository readRepo, ICollectionCategoryWriteRepository writeRepo)
     {
         _readRepo = readRepo;
         _writeRepo = writeRepo;

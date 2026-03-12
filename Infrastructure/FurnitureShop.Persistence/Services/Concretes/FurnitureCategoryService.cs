@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Application.Repositories.ReadRepositories;
+using FurnitureShop.Application.Repositories.WriteRepositories;
 using FurnitureShop.Application.Repsitories.Common;
 using FurnitureShop.Application.Services.Abstracts;
 using FurnitureShop.Domain.Entities.Concretes;
@@ -13,9 +14,9 @@ namespace FurnitureShop.Persistence.Services.Concretes;
 public class FurnitureCategoryService : IFurnitureCategoryService
 {
     private readonly IFurnitureCategoryReadRepository _readRepo;
-    private readonly IGenericWriteRepository<FurnitureCategory> _writeRepo;
+    private readonly IFurnitureCategoryWriteRepository _writeRepo;
 
-    public FurnitureCategoryService(IFurnitureCategoryReadRepository readRepo, IGenericWriteRepository<FurnitureCategory> writeRepo)
+    public FurnitureCategoryService(IFurnitureCategoryReadRepository readRepo, IFurnitureCategoryWriteRepository writeRepo)
     {
         _readRepo = readRepo;
         _writeRepo = writeRepo;

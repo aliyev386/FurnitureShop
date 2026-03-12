@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Application.Repsitories.Common;
 using FurnitureShop.Application.Repsitories.ReadRepositories;
+using FurnitureShop.Application.Repsitories.WriteRepositories;
 using FurnitureShop.Application.Services.Abstracts;
 using FurnitureShop.Domain.Entities.Concretes;
 using System;
@@ -14,9 +15,9 @@ namespace FurnitureShop.Persistence.Services.Concretes;
 public class CollectionService : ICollectionService
 {
     private readonly ICollectionReadRepository _readRepo;
-    private readonly IGenericWriteRepository<Collection> _writeRepo;
+    private readonly ICollectionWriteRepository _writeRepo;
 
-    public CollectionService(ICollectionReadRepository readRepo, IGenericWriteRepository<Collection> writeRepo)
+    public CollectionService(ICollectionReadRepository readRepo, ICollectionWriteRepository writeRepo)
     {
         _readRepo = readRepo;
         _writeRepo = writeRepo;

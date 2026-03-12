@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Application.Repsitories.Common;
 using FurnitureShop.Application.Repsitories.ReadRepositories;
+using FurnitureShop.Application.Repsitories.WriteRepositories;
 using FurnitureShop.Application.Services.Abstracts;
 using FurnitureShop.Domain.Entities.Concretes;
 using FurnitureShop.Domain.Entities.Enums;
@@ -14,9 +15,9 @@ namespace FurnitureShop.Persistence.Services.Concretes;
 public class OrderService : IOrderService
 {
     private readonly IOrderReadRepository _readRepo;
-    private readonly IGenericWriteRepository<Order> _writeRepo;
+    private readonly IOrderWriteRepository _writeRepo;
 
-    public OrderService(IOrderReadRepository readRepo, IGenericWriteRepository<Order> writeRepo)
+    public OrderService(IOrderReadRepository readRepo, IOrderWriteRepository writeRepo)
     {
         _readRepo = readRepo;
         _writeRepo = writeRepo;

@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Application.Repsitories.Common;
 using FurnitureShop.Application.Repsitories.ReadRepositories;
+using FurnitureShop.Application.Repsitories.WriteRepositories;
 using FurnitureShop.Application.Services.Abstracts;
 using FurnitureShop.Domain.Entities.Concretes;
 using System;
@@ -12,9 +13,9 @@ namespace FurnitureShop.Persistence.Services.Concretes;
 public class ProductService : IProductService
 {
     private readonly IProductReadRepository _readRepo;
-    private readonly IGenericWriteRepository<Product> _writeRepo;
+    private readonly IProductWriteRepository _writeRepo;
 
-    public ProductService(IProductReadRepository readRepo, IGenericWriteRepository<Product> writeRepo)
+    public ProductService(IProductReadRepository readRepo, IProductWriteRepository writeRepo)
     {
         _readRepo = readRepo;
         _writeRepo = writeRepo;
