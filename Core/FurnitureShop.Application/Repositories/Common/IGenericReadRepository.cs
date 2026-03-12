@@ -11,6 +11,6 @@ namespace FurnitureShop.Application.Repsitories.Common;
 public interface IGenericReadRepository<T> : IGenericRepository<T> where T : class, IBaseEntity, new()
 {
     Task<IEnumerable<T>> GetAllAsync();
-    Task<List<T>> GetExpressionAsync(Expression<Func<T, bool>> expression);
+    Task<IQueryable<T>> GetExpressionAsync(Expression<Func<T, bool>> expression);
     Task<T> GetByIdAsync(int id);
 }

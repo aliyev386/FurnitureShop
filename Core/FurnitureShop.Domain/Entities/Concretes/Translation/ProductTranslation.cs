@@ -3,6 +3,8 @@
 public class ProductTranslation
 {
     public int Id { get; set; }
+    public string Name { get; set; }
+    public string LanguageCode { get; set; }
     public int ProductId { get; set; }      
     public string Lang { get; set; }        // "az", "en", "ru"
     public string Title { get; set; }

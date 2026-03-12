@@ -8,4 +8,5 @@ namespace FurnitureShop.Domain.Entities.Common;
 
 public interface IBaseEntity
 {
+    int Id { get; set; }
 }

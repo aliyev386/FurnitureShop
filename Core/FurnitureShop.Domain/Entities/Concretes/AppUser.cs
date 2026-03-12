@@ -10,8 +10,9 @@ namespace FurnitureShop.Domain.Entities.Concretes;
 
 public class AppUser:IdentityUser,IBaseEntity
 {
+    int IBaseEntity.Id { get => 0; set { } }
     public string Username { get; set; }
     public string Role { get; set; }
     public ICollection<Order> Orders { get; set; }
-
+    
 }

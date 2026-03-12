@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Application.Repositories.WriteRepositories
 {
-    interface IFurnitureCategoryWriteRepository : IGenericWriteRepository<FurnitureCategory>
+    public interface IFurnitureCategoryWriteRepository : IGenericWriteRepository<FurnitureCategory>
     {
     }
 }

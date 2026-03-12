@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Domain.Entities.Common;
 
-public class BaseEntity:IBaseEntity
+public class BaseEntity: IBaseEntity
 {
-    public int Id   { get; set; }
+    public int Id { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    
 }

@@ -11,9 +11,10 @@ namespace FurnitureShop.Application.Repsitories.Common
     {
         Task AddAsync(T entity);
         Task AddRangeAsync(List<T> entities);
-        Task Update(T entity);
+        void Update(T entity);
+        void Delete(T entity);
         Task Delete(int id);
-        Task DeleteRange(List<T> entities);
+        void DeleteRange(List<T> entities);
         Task SaveChangeAsync();
     }
 }
