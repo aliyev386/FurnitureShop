@@ -38,7 +38,11 @@ public class ProductService : IProductService
 
     public async Task DeleteAsync(int id)
     {
-        await _writeRepo.Delete(id);
-        await _writeRepo.SaveChangeAsync();
+        var product = await _readRepo.GetByIdAsync(id);
+        if (product != null)
+        {
+            _writeRepo.Delete(product);
+            await _writeRepo.SaveChangeAsync();
+        }
     }
 }

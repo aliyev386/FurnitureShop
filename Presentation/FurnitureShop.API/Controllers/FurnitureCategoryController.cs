@@ -37,9 +37,9 @@ public class FurnitureCategoriesController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete([FromBody] int id)
+    public async Task<IActionResult> Delete([FromBody] FurnitureCategory category)
     {
-        await _furnitureCategoryService.DeleteAsync(id);
+        await _furnitureCategoryService.DeleteAsync(category);
         return Ok("Deleted successfully");
     }
 }

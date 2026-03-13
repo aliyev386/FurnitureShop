@@ -36,9 +36,9 @@ public class FurnitureCategoryService : IFurnitureCategoryService
         await _writeRepo.SaveChangeAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(FurnitureCategory category)
     {
-        await _writeRepo.Delete(id);
+        _writeRepo.Delete(category);
         await _writeRepo.SaveChangeAsync();
     }
 }

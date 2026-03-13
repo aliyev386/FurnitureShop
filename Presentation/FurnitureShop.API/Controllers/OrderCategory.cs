@@ -19,6 +19,6 @@ public class OrderController : ControllerBase
     }
 
     [HttpGet("user/{userId}")]
-    public async Task<IActionResult> GetUserOrders([FromBody] string userId)
+    public async Task<IActionResult> GetUserOrders([FromBody] Guid userId)
         => Ok(await _orderService.GetUserOrdersAsync(userId));
 }

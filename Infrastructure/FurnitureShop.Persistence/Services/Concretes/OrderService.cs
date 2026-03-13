@@ -23,7 +23,7 @@ public class OrderService : IOrderService
         _writeRepo = writeRepo;
     }
 
-    public async Task<IEnumerable<Order>> GetUserOrdersAsync(string userId) => await _readRepo.GetByUserIdAsync(userId);
+    public async Task<IEnumerable<Order>> GetUserOrdersAsync(Guid userId) => await _readRepo.GetByUserIdAsync(userId);
     public async Task<Order> GetOrderDetailsAsync(int id) => await _readRepo.GetWithItemsAsync(id);
 
     public async Task CreateOrderAsync(Order order)

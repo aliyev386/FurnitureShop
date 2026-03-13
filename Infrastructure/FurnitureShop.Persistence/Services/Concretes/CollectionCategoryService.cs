@@ -42,7 +42,11 @@ public class CollectionCategoryService : ICollectionCategoryService
 
     public async Task DeleteAsync(int id)
     {
-        await _writeRepo.Delete(id);
-        await _writeRepo.SaveChangeAsync();
+        var entity = await _readRepo.GetByIdAsync(id);
+        if (entity != null)
+        {
+            _writeRepo.Delete(entity);
+            await _writeRepo.SaveChangeAsync();
+        }
     }
 }

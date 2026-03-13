@@ -16,7 +16,7 @@ public class OrderReadRepository : GenericReadRepository<Order>, IOrderReadRepos
 {
     public OrderReadRepository(AppDbContext dbContext) : base(dbContext) { }
 
-    public async Task<IEnumerable<Order>> GetByUserIdAsync(string userId)
+    public async Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId)
     {
         return await Table
             .Where(x => x.User.Id == userId)

@@ -9,7 +9,7 @@ namespace FurnitureShop.Application.Services.Abstracts;
 
 public interface IOrderService
 {
-    Task<IEnumerable<Order>> GetUserOrdersAsync(string userId);
+    Task<IEnumerable<Order>> GetUserOrdersAsync(Guid userId);
     Task<Order> GetOrderDetailsAsync(int id);
     Task CreateOrderAsync(Order order);
     Task CancelOrderAsync(int id);

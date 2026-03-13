@@ -38,9 +38,9 @@ public class CollectionService : ICollectionService
         await _writeRepo.SaveChangeAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(Collection collection)
     {
-        await _writeRepo.Delete(id);
+        _writeRepo.Delete(collection);
         await _writeRepo.SaveChangeAsync();
     }
 }

@@ -12,5 +12,5 @@ public interface IFurnitureCategoryService
     Task<IEnumerable<FurnitureCategory>> GetAllAsync();
     Task CreateAsync(FurnitureCategory category);
     Task UpdateAsync(FurnitureCategory category);
-    Task DeleteAsync(int id);
+    Task DeleteAsync(FurnitureCategory category);
 }

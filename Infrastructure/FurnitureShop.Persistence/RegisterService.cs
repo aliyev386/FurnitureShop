@@ -29,7 +29,7 @@ public static class RegisterService
             opt.UseSqlServer(configuration.GetConnectionString("SqlServer"));
         });
 
-        services.AddIdentity<AppUser, IdentityRole>(options =>
+        services.AddIdentity<AppUser, AppRole>(options =>
         {
             options.Password.RequiredLength = 6;
             options.Password.RequireNonAlphanumeric = false;

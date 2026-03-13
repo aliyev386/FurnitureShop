@@ -11,7 +11,7 @@ namespace FurnitureShop.Application.Repsitories.ReadRepositories;
 
 public interface IOrderReadRepository:IGenericReadRepository<Order>
 {
-    Task<IEnumerable<Order>> GetByUserIdAsync(string userId);//userein orderlerini getirir
+    Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId);//userein orderlerini getirir
     Task<Order> GetWithItemsAsync(int id);//orderin icindekiler
     Task UpdateStatusAsync(int id, OrderStatus status);//basa dusmedim
 
