@@ -10,46 +10,21 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Persistence.Repositories.Common;
 
-public class GenericWriteRepository<T> : GenericRepository<T>, IGenericWriteRepository<T> where T : class, IBaseEntity, new()
+public class GenericWriteRepository<T> : GenericRepository<T>, IGenericWriteRepository<T> where T : class
 {
     public GenericWriteRepository(AppDbContext context) : base(context)
     {
     }
 
     public async Task AddAsync(T entity)
-    {
-        await _table.AddAsync(entity);
-    }
-
-    public async Task AddRangeAsync(List<T> entities)
-    {
-        await _table.AddRangeAsync(entities);
-    }
-
-    public void Delete(T entity)
-    {
-        _table.Remove(entity);
-    }
-
-    public async Task Delete(int id)
-    {
-        var entity = await _table.FirstOrDefaultAsync(x => x.Id == id);
-
-        _table.Remove(entity!);
-    }
-
-    public void DeleteRange(List<T> entities)
-    {
-        _table.RemoveRange(entities);
-    }
-
-    public async Task SaveChangeAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
+        => await Table.AddAsync(entity);
 
     public void Update(T entity)
-    {
-        _table.Update(entity);
-    }
+        => Table.Update(entity);
+
+    public void Delete(T entity)
+        => Table.Remove(entity);
+
+    public async Task<int> SaveChangeAsync()
+        => await _context.SaveChangesAsync();
 }

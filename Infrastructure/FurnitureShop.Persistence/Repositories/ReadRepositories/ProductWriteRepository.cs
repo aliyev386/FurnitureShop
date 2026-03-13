@@ -17,19 +17,19 @@ public class ProductReadRepository : GenericReadRepository<Product>, IProductRea
 
     public async Task<IEnumerable<Product>> GetByCategoryAsync(int categoryId)
     {
-        return await _table.Where(x => x.FurnitureCategoryId == categoryId).ToListAsync();
+        return await Table.Where(x => x.FurnitureCategoryId == categoryId).ToListAsync();
     }
 
     public async Task<IEnumerable<Product>> GetFeaturedAsync()
     {
-        return await _table.Where(x => x.IsFeatured)
+        return await Table.Where(x => x.IsFeatured)
                            .OrderBy(x => x.DisplayOrder)
                            .ToListAsync();
     }
 
     public async Task<IEnumerable<Product>> SearchAsync(string keyword, string language)
     {
-        return await _table
+        return await Table
             .Include(x => x.Translations)
             .Where(p => p.Translations.Any(t =>
                 t.LanguageCode == language &&

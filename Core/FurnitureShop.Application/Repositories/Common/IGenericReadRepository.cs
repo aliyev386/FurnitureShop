@@ -8,9 +8,13 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Application.Repsitories.Common;
 
-public interface IGenericReadRepository<T> : IGenericRepository<T> where T : class, IBaseEntity, new()
+public interface IGenericReadRepository<T> : IGenericRepository<T> where T : class
 {
+    IQueryable<T> GetAll();
+
     Task<IEnumerable<T>> GetAllAsync();
-    Task<IQueryable<T>> GetExpressionAsync(Expression<Func<T, bool>> expression);
+
     Task<T> GetByIdAsync(int id);
+
+    Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate);
 }

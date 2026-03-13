@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FurnitureShop.Application.Repsitories.ReadRepositories;
+using FurnitureShop.Application.Repsitories.WriteRepositories;
 using FurnitureShop.Application.Services.Abstracts;
 using FurnitureShop.Domain.Entities.Concretes;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.API.Controllers;
 
@@ -9,7 +11,18 @@ namespace FurnitureShop.API.Controllers;
 public class ProductController : ControllerBase
 {
     private readonly IProductService _productService;
-    public ProductController([FromBody] IProductService productService) => _productService = productService;
+    private readonly IProductReadRepository _productReadRepository;
+    private readonly IProductWriteRepository _productWriteRepository;
+
+    public ProductController(
+        IProductService productService,
+        IProductReadRepository productReadRepository,
+        IProductWriteRepository productWriteRepository)
+    {
+        _productService = productService;
+        _productReadRepository = productReadRepository;
+        _productWriteRepository = productWriteRepository;
+    }
 
     [HttpGet]
     public async Task<IActionResult> GetAll([FromQuery] string lang = "az")
@@ -19,7 +32,7 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetById([FromBody] int id)
+    public async Task<IActionResult> GetById(int id)
     {
         var product = await _productService.GetByIdAsync(id);
         return product != null ? Ok(product) : NotFound();
@@ -31,4 +44,14 @@ public class ProductController : ControllerBase
         await _productService.CreateAsync(product);
         return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var product = await _productReadRepository.GetByIdAsync(id);
+        _productWriteRepository.Delete(product);
+        await _productWriteRepository.SaveChangeAsync();
+        return Ok();
+    }
+
 }

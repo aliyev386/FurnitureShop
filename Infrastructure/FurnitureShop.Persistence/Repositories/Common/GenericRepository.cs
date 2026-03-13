@@ -10,14 +10,12 @@ using System;
 
 namespace FurnitureShop.Persistence.Repositories.Common;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : class, IBaseEntity, new()
+public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     protected readonly AppDbContext _context;
-    protected DbSet<T> _table;
-
-    public GenericRepository(AppDbContext appDbContext)
+    public GenericRepository(AppDbContext context)
     {
-        _context = appDbContext;
-        _table = _context.Set<T>();
+        _context = context;
     }
+    public DbSet<T> Table => _context.Set<T>();
 }

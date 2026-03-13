@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Domain.Entities.Common;
 using FurnitureShop.Domain.Entities.Enums;
+using FurnitureShop.Domain.Entities.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace FurnitureShop.Domain.Entities.Concretes;
 
 public class Order:BaseEntity
 {
-    public string UserId { get; set; }
-    public AppUser User { get; set; }
+    public string? UserId { get; set; }
+    public AppUser? User { get; set; }
     public string Type { get; set; }
     public string Status { get; set; }
     public decimal TotalPrice { get; set; }

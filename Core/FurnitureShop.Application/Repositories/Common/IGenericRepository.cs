@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Domain.Entities.Common;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Application.Repsitories.Common;
 
-public interface IGenericRepository<T> where T : IBaseEntity, new()
+public interface IGenericRepository<T> where T : class
 {
+    DbSet<T> Table { get; }
 }
+

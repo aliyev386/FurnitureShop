@@ -18,7 +18,7 @@ public class OrderReadRepository : GenericReadRepository<Order>, IOrderReadRepos
 
     public async Task<IEnumerable<Order>> GetByUserIdAsync(string userId)
     {
-        return await _table
+        return await Table
             .Where(x => x.User.Id == userId)
             .OrderByDescending(x => x.CreatedAt)
             .ToListAsync();
@@ -26,7 +26,7 @@ public class OrderReadRepository : GenericReadRepository<Order>, IOrderReadRepos
 
     public async Task<Order> GetWithItemsAsync(int id)
     {
-        return await _table
+        return await Table
             .Include(x => x.Items)
             .ThenInclude(i => i.Product)
             .FirstOrDefaultAsync(x => x.Id == id);
@@ -34,7 +34,7 @@ public class OrderReadRepository : GenericReadRepository<Order>, IOrderReadRepos
 
     public async Task UpdateStatusAsync(int id, OrderStatus status)
     {
-        var order = await _table.FindAsync(id);
+        var order = await Table.FindAsync(id);
         if (order != null)
         {
             order.Status = status.ToString();

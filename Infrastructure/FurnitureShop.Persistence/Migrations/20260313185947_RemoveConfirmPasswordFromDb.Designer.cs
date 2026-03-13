@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FurnitureShop.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260312163419_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260313185947_RemoveConfirmPasswordFromDb")]
+    partial class RemoveConfirmPasswordFromDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -53,6 +53,7 @@ namespace FurnitureShop.Persistence.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -65,6 +66,10 @@ namespace FurnitureShop.Persistence.Migrations
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -72,6 +77,10 @@ namespace FurnitureShop.Persistence.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -82,11 +91,11 @@ namespace FurnitureShop.Persistence.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
+                    b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SecurityStamp")
+                    b.Property<string>("Surname")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -95,10 +104,6 @@ namespace FurnitureShop.Persistence.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -293,7 +298,6 @@ namespace FurnitureShop.Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -545,7 +549,7 @@ namespace FurnitureShop.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("HeroSectionId")
+                    b.Property<int>("HeroId")
                         .HasColumnType("int");
 
                     b.Property<string>("Lang")
@@ -560,14 +564,9 @@ namespace FurnitureShop.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("heroSectionId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("heroSectionId");
-
-                    b.HasIndex("HeroSectionId", "Lang")
+                    b.HasIndex("HeroId", "Lang")
                         .IsUnique();
 
                     b.ToTable("HeroTranslations");
@@ -776,8 +775,7 @@ namespace FurnitureShop.Persistence.Migrations
                     b.HasOne("FurnitureShop.Domain.Entities.Concretes.AppUser", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.SetNull)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });
@@ -866,19 +864,11 @@ namespace FurnitureShop.Persistence.Migrations
                 {
                     b.HasOne("FurnitureShop.Domain.Entities.Concretes.HeroSection", "HeroSection")
                         .WithMany("Translations")
-                        .HasForeignKey("HeroSectionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("FurnitureShop.Domain.Entities.Concretes.HeroSection", "heroSection")
-                        .WithMany()
-                        .HasForeignKey("heroSectionId")
+                        .HasForeignKey("HeroId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("HeroSection");
-
-                    b.Navigation("heroSection");
                 });
 
             modelBuilder.Entity("FurnitureShop.Domain.Entities.Concretes.Translation.ProductTranslation", b =>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FurnitureShop.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class FinalFix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,11 +30,13 @@ namespace FurnitureShop.Persistence.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Surname = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConfirmPassword = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -229,7 +231,7 @@ namespace FurnitureShop.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Type = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -246,7 +248,7 @@ namespace FurnitureShop.Persistence.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -380,22 +382,15 @@ namespace FurnitureShop.Persistence.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Subtitle = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BadgeText = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HeroSectionId = table.Column<int>(type: "int", nullable: false),
                     Lang = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    heroSectionId = table.Column<int>(type: "int", nullable: false)
+                    HeroId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HeroTranslations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HeroTranslations_HeroSections_HeroSectionId",
-                        column: x => x.HeroSectionId,
-                        principalTable: "HeroSections",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HeroTranslations_HeroSections_heroSectionId",
-                        column: x => x.heroSectionId,
+                        name: "FK_HeroTranslations_HeroSections_HeroId",
+                        column: x => x.HeroId,
                         principalTable: "HeroSections",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -585,14 +580,9 @@ namespace FurnitureShop.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_HeroTranslations_heroSectionId",
+                name: "IX_HeroTranslations_HeroId_Lang",
                 table: "HeroTranslations",
-                column: "heroSectionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HeroTranslations_HeroSectionId_Lang",
-                table: "HeroTranslations",
-                columns: new[] { "HeroSectionId", "Lang" },
+                columns: new[] { "HeroId", "Lang" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

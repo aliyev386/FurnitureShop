@@ -5,16 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FurnitureShop.Application.Repsitories.Common
+namespace FurnitureShop.Application.Repsitories.Common;
+
+public interface IGenericWriteRepository<T> : IGenericRepository<T> where T : class
 {
-    public interface IGenericWriteRepository<T> : IGenericRepository<T> where T : class, IBaseEntity, new()
-    {
-        Task AddAsync(T entity);
-        Task AddRangeAsync(List<T> entities);
-        void Update(T entity);
-        void Delete(T entity);
-        Task Delete(int id);
-        void DeleteRange(List<T> entities);
-        Task SaveChangeAsync();
-    }
+    Task AddAsync(T entity);
+    void Update(T entity);
+    void Delete(T entity);
+    Task<int> SaveChangeAsync();
 }

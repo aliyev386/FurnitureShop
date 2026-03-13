@@ -3,27 +3,32 @@ using FurnitureShop.Application.Services.Abstracts;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.API.Controllers;
-
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    public AuthController(IAuthService authService) => _authService = authService;
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
+    public AuthController(IAuthService authService)
     {
-        var result = await _authService.RegisterAsync(registerDto.Email, registerDto.Name, registerDto.Password);
-
-        return result.Succeeded ? Ok("İstifadəçi yaradıldı") : BadRequest(result.Errors);
+        _authService = authService;
     }
 
-    [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+    [HttpPost("Login")]
+    public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
-        var result = await _authService.LoginAsync(loginDto.Email, loginDto.Password, false);
+        return Ok(await _authService.LoginAsync(dto));
+    }
 
-        return result.Succeeded ? Ok("Giriş uğurludur") : Unauthorized();
+    [HttpPost("Register")]
+    public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+    {
+        return Ok(await _authService.RegisterAsync(dto));
+    }
+
+    [HttpPost("Refresh")]
+    public async Task<IActionResult> Refresh([FromBody] string token)
+    {
+        return Ok(await _authService.RefreshTokenAsync(token));
     }
 }

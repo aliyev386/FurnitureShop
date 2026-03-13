@@ -17,7 +17,7 @@ namespace FurnitureShop.Persistence.Repositories.ReadRepositories
 
         public async Task<IEnumerable<CollectionCategory>> GetRoomCategoriesAsync()
         {            
-            return await _table.ToListAsync();
+            return await Table.ToListAsync();
         }
     }
 }

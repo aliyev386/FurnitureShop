@@ -3,10 +3,12 @@ using FurnitureShop.Application.Repositories.WriteRepositories;
 using FurnitureShop.Application.Repsitories.ReadRepositories;
 using FurnitureShop.Application.Repsitories.WriteRepositories;
 using FurnitureShop.Application.Services.Abstracts;
+using FurnitureShop.Domain.Entities.Identity;
 using FurnitureShop.Persistence.Datas;
 using FurnitureShop.Persistence.Repositories.ReadRepositories;
 using FurnitureShop.Persistence.Repositories.WriteRepositories;
 using FurnitureShop.Persistence.Services.Concretes;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +29,16 @@ public static class RegisterService
             opt.UseSqlServer(configuration.GetConnectionString("SqlServer"));
         });
 
+        services.AddIdentity<AppUser, IdentityRole>(options =>
+        {
+            options.Password.RequiredLength = 6;
+            options.Password.RequireNonAlphanumeric = false;
+            options.Password.RequireDigit = false;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+        })
+        .AddEntityFrameworkStores<AppDbContext>();
+
         AddRepositoriesExtention(services);
         AddServiceExtention(services);
     }
@@ -37,15 +49,13 @@ public static class RegisterService
         services.AddScoped<IOrderReadRepository, OrderReadRepository>();
         services.AddScoped<ICollectionReadRepository, CollectionReadRepository>();
         services.AddScoped<ICollectionCategoryReadRepository, CollectionCategoryReadRepository>();
-        services.AddScoped<IFurnitureCategoryReadRepository, FurnitureCategoryReadRepository>();
-        services.AddScoped<IAuthReadRepository, AuthReadRepository>();
+        services.AddScoped<IFurnitureCategoryReadRepository, FurnitureCategoryReadRepository>();        
         
         services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
         services.AddScoped<IOrderWriteRepository, OrderWriteRepository>();
         services.AddScoped<ICollectionWriteRepository, CollectionWriteRepository>();
         services.AddScoped<ICollectionCategoryWriteRepository, CollectionCategoryWriteRepository>();
-        services.AddScoped<IFurnitureCategoryWriteRepository, FurnitureCategoryWriteRepository>();
-        services.AddScoped<IAuthWriteRepository, AuthWriteRepository>();
+        services.AddScoped<IFurnitureCategoryWriteRepository, FurnitureCategoryWriteRepository>();        
         
 
     }

@@ -1,5 +1,6 @@
-﻿using FurnitureShop.Application.Services.Abstracts;
-using FurnitureShop.Domain.Entities.Concretes;
+﻿using FurnitureShop.Application.Dtos.Auth;
+using FurnitureShop.Application.Services.Abstracts;
+using FurnitureShop.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -11,39 +12,48 @@ namespace FurnitureShop.Persistence.Services.Concretes;
 public class AuthService : IAuthService
 {
     private readonly UserManager<AppUser> _userManager;
-    private readonly SignInManager<AppUser> _signInManager;
+    private readonly ITokenService _tokenService;
 
-    public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+    public AuthService(UserManager<AppUser> userManager,
+                       ITokenService tokenService)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
+        _tokenService = tokenService;
     }
 
-    public async Task<IdentityResult> RegisterAsync(string email, string username, string password)
+    public async Task<TokenResponseDto> LoginAsync(LoginDto dto)
+    {
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+
+        if (user == null)
+            throw new Exception("User not found");
+
+        var result = await _userManager.CheckPasswordAsync(user, dto.Password);
+
+        if (!result)
+            throw new Exception("Password incorrect");
+
+        return _tokenService.CreateToken(user);
+    }
+
+    public async Task<TokenResponseDto> RegisterAsync(RegisterDto dto)
     {
         var user = new AppUser
         {
-            Email = email,
-            UserName = username,
-            Username = username
+            UserName = dto.Email,
+            Email = dto.Email
         };
 
-        var result = await _userManager.CreateAsync(user, password);
-        if (result.Succeeded)
-        {
-            await _userManager.AddToRoleAsync(user, "User");
-        }
+        var result = await _userManager.CreateAsync(user, dto.Password);
 
-        return result;
+        if (!result.Succeeded)
+            throw new Exception("User create failed");
+
+        return _tokenService.CreateToken(user);
     }
 
-    public async Task<SignInResult> LoginAsync(string username, string password, bool isPersistent)
+    public async Task<TokenResponseDto> RefreshTokenAsync(string refreshToken)
     {
-        return await _signInManager.PasswordSignInAsync(username, password, isPersistent, lockoutOnFailure: false);
-    }
-
-    public async Task LogoutAsync()
-    {
-        await _signInManager.SignOutAsync();
+        throw new NotImplementedException();
     }
 }

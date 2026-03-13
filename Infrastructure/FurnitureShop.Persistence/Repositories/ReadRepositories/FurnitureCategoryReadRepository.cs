@@ -17,7 +17,7 @@ public class FurnitureCategoryReadRepository : GenericReadRepository<FurnitureCa
 
     public async Task<IEnumerable<FurnitureCategory>> GetFurnitureCategoriesAsync()
     {
-        return await _table
+        return await Table
             .Include(x => x.Translations)
             .ToListAsync();
     }

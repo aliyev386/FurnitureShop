@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Domain.Entities.Concretes;
 using FurnitureShop.Domain.Entities.Concretes.Translation;
+using FurnitureShop.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Persistence.Datas;
 
-public class AppDbContext : IdentityDbContext<AppUser>
+public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -81,7 +82,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .HasOne(o => o.User)
             .WithMany(u => u.Orders)
             .HasForeignKey(o => o.UserId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<OrderItem>()
             .HasOne(oi => oi.Product)
@@ -122,9 +123,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
         builder.Entity<HeroTranslation>()
             .HasOne(t => t.HeroSection)
             .WithMany(h => h.Translations)
-            .HasForeignKey(t => t.HeroSectionId)
+            .HasForeignKey(t => t.HeroId)
             .OnDelete(DeleteBehavior.Cascade);
-
         builder.Entity<CampaignTranslation>()
             .HasOne(t => t.Campaign)
             .WithMany(c => c.Translations)
@@ -148,7 +148,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
             .IsUnique();
 
         builder.Entity<HeroTranslation>()
-            .HasIndex(t => new { t.HeroSectionId, t.Lang })
+            .HasIndex(t => new { t.HeroId, t.Lang })
             .IsUnique();
 
         builder.Entity<CampaignTranslation>()

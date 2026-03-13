@@ -18,7 +18,7 @@ public class CollectionReadRepository : GenericReadRepository<Collection>, IColl
 
     public async Task<IEnumerable<Collection>> GetByRoomCategoryAsync(int roomCategoryId)
     {
-        return await _table
+        return await Table
             .Where(x => x.CollectionCategoryId == roomCategoryId)
             .Include(x => x.Translations)
             .ToListAsync();
@@ -26,7 +26,7 @@ public class CollectionReadRepository : GenericReadRepository<Collection>, IColl
 
     public async Task<Collection> GetWithProductsAsync(int id)
     {
-        return await _table
+        return await Table
             .Include(x => x.Products)
             .Include(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == id);

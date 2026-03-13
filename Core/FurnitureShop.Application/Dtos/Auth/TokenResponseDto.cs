@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Application.Dtos.Auth
 {
-    public class AuthResponseDto
+    public class TokenResponseDto
     {
-        public string Token { get; set; }
+        public string AccessToken { get; set; }
+        public string RefreshToken { get; set; }
         public DateTime ExpireDate { get; set; }
     }
+
 }

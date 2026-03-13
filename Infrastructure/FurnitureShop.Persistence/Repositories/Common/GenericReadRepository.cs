@@ -7,28 +7,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FurnitureShop.Persistence.Repositories.Common;
-
-public class GenericReadRepository<T> : GenericRepository<T>, IGenericReadRepository<T> where T : class, IBaseEntity, new()
+public class GenericReadRepository<T> : GenericRepository<T>, IGenericReadRepository<T> where T : class
 {
-    public GenericReadRepository(AppDbContext dbContext) : base(dbContext)
-    {
+    public GenericReadRepository(AppDbContext context) : base(context) { }
 
-    }
+    public IQueryable<T> GetAll()
+        => Table.AsNoTracking();
+
     public async Task<IEnumerable<T>> GetAllAsync()
-    {
-        return _table;
-    }
+        => await Table.AsNoTracking().ToListAsync();
 
-    public Task<T> GetByIdAsync(int id)
-    {
-        return _table.FirstOrDefaultAsync(x => x.Id == id)!;
-    }
+    public async Task<T> GetByIdAsync(int id)
+        => await Table.FindAsync(id);
 
-    public async Task<IQueryable<T>> GetExpressionAsync(Expression<Func<T, bool>> expression)
-    {
-        return _table.Where(expression);
-    }
+    public async Task<T> GetSingleAsync(Expression<Func<T, bool>> predicate)
+        => await Table.AsNoTracking().FirstOrDefaultAsync(predicate);
+
+    public IQueryable<T> AsQueryable() => Table.AsNoTracking();
+
 }

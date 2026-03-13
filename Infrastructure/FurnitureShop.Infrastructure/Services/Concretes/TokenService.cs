@@ -1,5 +1,6 @@
-﻿using FurnitureShop.Application.Services.Abstracts;
-using FurnitureShop.Domain.Entities.Concretes;
+﻿using FurnitureShop.Application.Dtos.Auth;
+using FurnitureShop.Application.Services.Abstracts;
+using FurnitureShop.Domain.Entities.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,35 +16,42 @@ namespace FurnitureShop.Infrastructure.Services.Concretes;
 
 public class TokenService : ITokenService
 {
-    private readonly IConfiguration _configuration;
-
-    public TokenService(IConfiguration configuration)
+    public TokenResponseDto CreateToken(AppUser user)
     {
-        _configuration = configuration;
-    }
-
-    public string CreateToken(AppUser appUser)
-    {
-        var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SecretKey"]!));
-
-        var tokenDescription = new SecurityTokenDescriptor()
+        var claims = new List<Claim>
         {
-            Issuer = _configuration["JWT:IsSuer"],
-            Audience = _configuration["JWT:Audience"],
-            Expires = DateTime.UtcNow.AddMinutes(2),
-            SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256),
-            Subject = new ClaimsIdentity(new Claim[]
-            {
-                new Claim(ClaimTypes.Name, appUser.Username!),
-                new Claim(ClaimTypes.Role, appUser.Role!),
-                new Claim(ClaimTypes.Email, appUser.Email!),
-            })
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Email, user.Email)
         };
 
-        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("supersecretkey123456"));
 
-        var token = tokenHandler.CreateToken(tokenDescription);
+        var token = new JwtSecurityToken(
+            issuer: "FurnitureAPI",
+            audience: "FurnitureAPI",
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(15),
+            signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
+        );
 
-        return tokenHandler.WriteToken(token);
+        var handler = new JwtSecurityTokenHandler();
+
+        return new TokenResponseDto
+        {
+            AccessToken = handler.WriteToken(token),
+            RefreshToken = CreateRefreshToken(),
+            ExpireDate = token.ValidTo
+        };
+    }
+
+    public string CreateRefreshToken()
+    {
+        var random = new byte[32];
+
+        using var rng = RandomNumberGenerator.Create();
+
+        rng.GetBytes(random);
+
+        return Convert.ToBase64String(random);
     }
 }
