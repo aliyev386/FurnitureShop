@@ -1,5 +1,6 @@
 ﻿using FurnitureShop.Application.Services.Abstracts;
 using FurnitureShop.Domain.Entities.Concretes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.API.Controllers;
@@ -27,14 +28,14 @@ public class CollectionCategoriesController : ControllerBase
         var category = await _collectionCategoryService.GetByIdAsync(id, lang);
         return category != null ? Ok(category) : NotFound();
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CollectionCategory category)
     {
         await _collectionCategoryService.CreateAsync(category);
         return Ok(new { message = "Collection category created successfully", id = category.Id });
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete([FromBody] int id)
     {

@@ -1,4 +1,5 @@
 ﻿using FurnitureShop.Application.Services.Abstracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.API.Controllers;
@@ -15,10 +16,10 @@ public class CollectionController : ControllerBase
         _collectionService = collectionService;
         _categoryService = categoryService;
     }
-
+    
     [HttpGet]
     public async Task<IActionResult> GetCollections() => Ok(await _collectionService.GetAllAsync());
-
+    
     [HttpGet("categories")]
     public async Task<IActionResult> GetCategories([FromBody] string lang = "az")
         => Ok(await _categoryService.GetAllWithTranslationsAsync(lang));

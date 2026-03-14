@@ -1,6 +1,7 @@
 ﻿using FurnitureShop.Domain.Entities.Concretes;
 using FurnitureShop.Domain.Entities.Concretes.Translation;
 using FurnitureShop.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,10 +11,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace FurnitureShop.Persistence.Datas;
-
-public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid>
+public class AppDbContext : IdentityDbContext<AppUser, AppRole, string>
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
 
     public DbSet<FurnitureCategory> FurnitureCategories { get; set; }
     public DbSet<CollectionCategory> CollectionCategories { get; set; }

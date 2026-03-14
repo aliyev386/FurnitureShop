@@ -2,6 +2,7 @@
 using FurnitureShop.Application.Repsitories.WriteRepositories;
 using FurnitureShop.Application.Services.Abstracts;
 using FurnitureShop.Domain.Entities.Concretes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.API.Controllers;
@@ -37,14 +38,14 @@ public class ProductController : ControllerBase
         var product = await _productService.GetByIdAsync(id);
         return product != null ? Ok(product) : NotFound();
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] Product product)
     {
         await _productService.CreateAsync(product);
         return CreatedAtAction(nameof(GetById), new { id = product.Id }, product);
     }
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id)
     {

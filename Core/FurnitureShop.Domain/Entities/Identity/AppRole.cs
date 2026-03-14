@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Domain.Entities.Identity;
 
-public class AppRole : IdentityRole<Guid>
+public class AppRole : IdentityRole<string>
 {
 }

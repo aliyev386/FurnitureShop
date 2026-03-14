@@ -11,7 +11,7 @@ namespace FurnitureShop.Domain.Entities.Concretes;
 
 public class Order:BaseEntity
 {
-    public Guid UserId { get; set; }
+    public string UserId { get; set; }
     public AppUser? User { get; set; }
     public string Type { get; set; }
     public string Status { get; set; }

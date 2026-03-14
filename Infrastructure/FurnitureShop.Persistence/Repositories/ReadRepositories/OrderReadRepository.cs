@@ -19,7 +19,7 @@ public class OrderReadRepository : GenericReadRepository<Order>, IOrderReadRepos
     public async Task<IEnumerable<Order>> GetByUserIdAsync(Guid userId)
     {
         return await Table
-            .Where(x => x.User.Id == userId)
+            .Where(x => x.User.Id == userId.ToString())
             .OrderByDescending(x => x.CreatedAt)
             .ToListAsync();
     }

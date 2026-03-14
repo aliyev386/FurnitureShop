@@ -29,15 +29,6 @@ public static class RegisterService
             opt.UseSqlServer(configuration.GetConnectionString("SqlServer"));
         });
 
-        services.AddIdentity<AppUser, AppRole>(options =>
-        {
-            options.Password.RequiredLength = 6;
-            options.Password.RequireNonAlphanumeric = false;
-            options.Password.RequireDigit = false;
-            options.Password.RequireLowercase = false;
-            options.Password.RequireUppercase = false;
-        })
-        .AddEntityFrameworkStores<AppDbContext>();
 
         AddRepositoriesExtention(services);
         AddServiceExtention(services);
