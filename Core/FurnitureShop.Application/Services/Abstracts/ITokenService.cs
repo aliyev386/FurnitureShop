@@ -11,4 +11,5 @@ public interface ITokenService
 {
     TokenResponseDto CreateToken(AppUser user);
     string CreateRefreshToken();
+    string CreateAccessToken(AppUser user);
 }

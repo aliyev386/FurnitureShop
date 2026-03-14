@@ -16,6 +16,7 @@ public class AppUser : IdentityUser<Guid>
     public string Surname { get; set; }
     public ICollection<Order> Orders { get; set; }
 
-    public ICollection<RefreshToken> RefreshTokens { get; set; }
+    public string? RefreshToken { get; set; }
+    public DateTime RefreshTokenExpiryTime { get; set; }
 
 }
