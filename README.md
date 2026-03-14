@@ -1,5 +1,5 @@
-✅ – etdiklərin üçün
-❌ – etmədiklərin üçün
+✅ – etdiklərim üçün
+❌ – etmədiklərim üçün
 
 JWT Bearer Authentication   ✅
 
