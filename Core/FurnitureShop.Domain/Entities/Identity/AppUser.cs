@@ -10,8 +10,13 @@ using System.Threading.Tasks;
 
 namespace FurnitureShop.Domain.Entities.Identity;
 
-public class AppUser : IdentityUser<string>
+public class AppUser : IdentityUser
 {
+    public AppUser()
+    {
+        Id = Guid.NewGuid().ToString();
+    }
+
     public string Name { get; set; }
     public string Surname { get; set; }
     public ICollection<Order> Orders { get; set; }
