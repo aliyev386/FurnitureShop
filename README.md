@@ -15,7 +15,7 @@ Admin Role                  ✅
 
 Swagger Documentation       ❌
 
-FluentValidation            ❌
+FluentValidation            ✅
 
 Pagination                  ❌
 
