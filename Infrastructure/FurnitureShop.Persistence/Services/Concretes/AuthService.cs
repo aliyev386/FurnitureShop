@@ -37,7 +37,7 @@ public class AuthService : IAuthService
         if (!result)
             throw new Exception("Password incorrect");
 
-        return _tokenService.CreateToken(user);
+        return await _tokenService.CreateTokenAsync(user); // ✅ async
     }
 
     public async Task<TokenResponseDto> RegisterAsync(RegisterDto dto)
@@ -51,7 +51,6 @@ public class AuthService : IAuthService
             RefreshToken = Guid.NewGuid().ToString()
         };
 
-
         var result = await _userManager.CreateAsync(user, dto.Password);
 
         if (!result.Succeeded)
@@ -59,8 +58,8 @@ public class AuthService : IAuthService
             var errors = string.Join(", ", result.Errors.Select(e => e.Description));
             throw new Exception($"User create failed: {errors}");
         }
-        
-        return _tokenService.CreateToken(user);
+
+        return await _tokenService.CreateTokenAsync(user); // ✅ async
     }
 
     public async Task<TokenResponseDto> RefreshTokenAsync(TokenResponseDto request)
@@ -74,8 +73,7 @@ public class AuthService : IAuthService
         if (user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             throw new Exception("Refresh token expired");
 
-        var newAccessToken = _tokenService.CreateAccessToken(user);
-
+        var newAccessToken = await _tokenService.CreateAccessTokenAsync(user); // ✅ async
         var newRefreshToken = _tokenService.CreateRefreshToken();
 
         user.RefreshToken = newRefreshToken;

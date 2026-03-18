@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace FurnitureShop.Application.Services.Abstracts;
 public interface ITokenService
 {
-    TokenResponseDto CreateToken(AppUser user);
+    Task<TokenResponseDto> CreateTokenAsync(AppUser user);
     string CreateRefreshToken();
-    string CreateAccessToken(AppUser user);
+    Task<string> CreateAccessTokenAsync(AppUser user);
 }

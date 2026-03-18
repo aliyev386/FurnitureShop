@@ -11,6 +11,7 @@ namespace FurnitureShop.Application.Repsitories.ReadRepositories;
 public interface ICollectionReadRepository:IGenericReadRepository<Collection>
 {
     Task<IEnumerable<Collection>> GetByRoomCategoryAsync(int roomCategoryId);//bu categoriyaya uygun destleri getirir
-    Task<Collection> GetWithProductsAsync(int id); //destleri productlari ile biryerde getirir
+    Task<Collection> GetWithProductsAsync(int id);
+    Task<List<Collection>> GetWhere(Func<Collection, bool> predicate);
 
 }

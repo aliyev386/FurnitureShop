@@ -14,6 +14,7 @@ public class RegisterValidator : AbstractValidator<RegisterDto>
     {
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Ad boş ola bilməz")
+            .MinimumLength(3).WithMessage("Ad ən azı 3 simvol olmalıdır")
             .MaximumLength(50);
 
         RuleFor(x => x.Surname)

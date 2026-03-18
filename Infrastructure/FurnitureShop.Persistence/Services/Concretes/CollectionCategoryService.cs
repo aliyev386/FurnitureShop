@@ -1,4 +1,6 @@
-﻿using FurnitureShop.Application.Repsitories.Common;
+﻿using FurnitureShop.Application.Dtos.Collection;
+using FurnitureShop.Application.Dtos.CollectionCategory;
+using FurnitureShop.Application.Repsitories.Common;
 using FurnitureShop.Application.Repsitories.ReadRepositories;
 using FurnitureShop.Application.Repsitories.WriteRepositories;
 using FurnitureShop.Application.Services.Abstracts;
@@ -22,11 +24,16 @@ public class CollectionCategoryService : ICollectionCategoryService
         _writeRepo = writeRepo;
     }
 
-    public async Task<IEnumerable<CollectionCategory>> GetAllWithTranslationsAsync(string langCode)
+    public async Task<IEnumerable<CollectionCategoryDto>> GetAllWithTranslationsAsync(string langCode)
     {
         var categories = await _readRepo.GetRoomCategoriesAsync();
 
-        return categories;
+        return categories.Select(x => new CollectionCategoryDto
+        {
+            Id = x.Id,
+            Name = x.Translations
+                .FirstOrDefault(t => t.Lang == langCode)?.Name
+        });
     }
 
     public async Task<CollectionCategory> GetByIdAsync(int id, string langCode)
@@ -48,5 +55,32 @@ public class CollectionCategoryService : ICollectionCategoryService
             _writeRepo.Delete(entity);
             await _writeRepo.SaveChangeAsync();
         }
+    }
+
+    public async Task<List<object>> GetAllSimpleAsync(string lang)
+    {
+        var categories = await _readRepo.GetAllAsync();
+
+        return categories.Select(x => (object)new
+        {
+            x.Id,
+            Name = x.Translations
+                .FirstOrDefault(t => t.Lang == lang)?.Name
+        }).ToList();
+    }
+
+    public async Task<List<CollectionDto>> GetByCategoryIdAsync(int categoryId)
+    {
+        var collections = await _readRepo.GetAllAsync();
+
+        return collections
+            .Where(x => x.CollectionCategoryId == categoryId)
+            .Select(x => new CollectionDto
+            {
+                Id = x.Id,
+                ImageUrl = x.ImagesUrl,
+                TotalPrice = x.TotalPrice
+            })
+            .ToList();
     }
 }

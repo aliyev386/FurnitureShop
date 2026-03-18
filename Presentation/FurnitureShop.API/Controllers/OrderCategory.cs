@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/order")]
 [ApiController]
 public class OrderController : ControllerBase
 {

@@ -16,8 +16,14 @@ namespace FurnitureShop.Persistence.Repositories.ReadRepositories
         public CollectionCategoryReadRepository(AppDbContext dbContext) : base(dbContext) { }
 
         public async Task<IEnumerable<CollectionCategory>> GetRoomCategoriesAsync()
-        {            
-            return await Table.ToListAsync();
+        {
+            return await Table
+                .Select(x => new CollectionCategory
+                {
+                    Id = x.Id,
+                    Translations = x.Translations
+                })
+                .ToListAsync();
         }
     }
 }

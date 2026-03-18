@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FurnitureShop.API.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/collection")]
 [ApiController]
 public class CollectionController : ControllerBase
 {
@@ -16,7 +16,12 @@ public class CollectionController : ControllerBase
         _collectionService = collectionService;
         _categoryService = categoryService;
     }
-    
+    [HttpGet("by-category/{categoryId}")]
+    public async Task<IActionResult> GetByCategory(int categoryId)
+    {
+        var data = await _collectionService.GetByCategoryIdAsync(categoryId);
+        return Ok(data);
+    }
     [HttpGet]
     public async Task<IActionResult> GetCollections() => Ok(await _collectionService.GetAllAsync());
     

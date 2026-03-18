@@ -31,4 +31,10 @@ public class CollectionReadRepository : GenericReadRepository<Collection>, IColl
             .Include(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
+
+    public async Task<List<Collection>> GetWhere(Func<Collection, bool> predicate)
+    {
+        var all = await Table.ToListAsync();
+        return all.Where(predicate).ToList();
+    }
 }

@@ -15,4 +15,5 @@ public interface ICollectionService
     Task CreateAsync(Collection collection);
     Task UpdateAsync(Collection collection);
     Task DeleteAsync(Collection collection);
+    Task<List<object>> GetByCategoryIdAsync(int categoryId);
 }

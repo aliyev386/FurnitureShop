@@ -1,69 +1,80 @@
 ﻿using FurnitureShop.Application.Dtos.Auth;
 using FurnitureShop.Application.Services.Abstracts;
 using FurnitureShop.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FurnitureShop.Infrastructure.Services.Concretes;
-
-public class TokenService : ITokenService
+namespace FurnitureShop.Infrastructure.Services.Concretes
 {
-    private readonly IConfiguration _configuration;
-
-    public TokenService(IConfiguration configuration)
+    public class TokenService : ITokenService
     {
-        _configuration = configuration;
-    }
+        private readonly IConfiguration _configuration;
+        private readonly UserManager<AppUser> _userManager;
 
-    public TokenResponseDto CreateToken(AppUser user)
-    {
-        var accessToken = CreateAccessToken(user);
-
-        return new TokenResponseDto
+        public TokenService(IConfiguration configuration, UserManager<AppUser> userManager)
         {
-            AccessToken = accessToken,
-            RefreshToken = CreateRefreshToken(),
-            ExpireDate = DateTime.UtcNow.AddMinutes(15)
-        };
-    }
+            _configuration = configuration;
+            _userManager = userManager;
+        }
 
-    public string CreateRefreshToken()
-    {
-        var random = new byte[32];
-        using var rng = RandomNumberGenerator.Create();
-        rng.GetBytes(random);
-        return Convert.ToBase64String(random);
-    }
-    public string CreateAccessToken(AppUser user)
-    {
-        var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-        new Claim(ClaimTypes.Email, user.Email)
-    };
+        public async Task<TokenResponseDto> CreateTokenAsync(AppUser user)
+        {
+            var accessToken = await CreateAccessTokenAsync(user);
 
-        var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_configuration["JWT:Secret"])
-        );
+            return new TokenResponseDto
+            {
+                AccessToken = accessToken,
+                RefreshToken = CreateRefreshToken(),
+                ExpireDate = DateTime.UtcNow.AddMinutes(15)
+            };
+        }
 
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        public string CreateRefreshToken()
+        {
+            var random = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(random);
+            return Convert.ToBase64String(random);
+        }
 
-        var token = new JwtSecurityToken(
-            issuer: _configuration["JWT:Issuer"],
-            audience: _configuration["JWT:Audience"],
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(15),
-            signingCredentials: creds
-        );
+        public async Task<string> CreateAccessTokenAsync(AppUser user)
+        {
+            var claims = new List<Claim>
 
-        return new JwtSecurityTokenHandler().WriteToken(token);
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
+
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration["JWT:Secret"])
+            );
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["JWT:Issuer"],
+                audience: _configuration["JWT:Audience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(15),
+                signingCredentials: creds
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 }

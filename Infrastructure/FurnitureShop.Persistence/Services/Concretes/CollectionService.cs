@@ -43,4 +43,16 @@ public class CollectionService : ICollectionService
         _writeRepo.Delete(collection);
         await _writeRepo.SaveChangeAsync();
     }
+    public async Task<List<object>> GetByCategoryIdAsync(int categoryId)
+    {
+        var collections = await _readRepo.GetWhere(x => x.CollectionCategoryId == categoryId);
+
+        return collections.Select(x => (object)new
+        {
+            x.Id,
+            x.ImagesUrl,
+            x.TotalPrice,
+            x.DiscountPrice
+        }).ToList();
+    }
 }
