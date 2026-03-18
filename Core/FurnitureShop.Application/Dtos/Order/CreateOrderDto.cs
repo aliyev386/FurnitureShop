@@ -11,8 +11,7 @@ namespace FurnitureShop.Application.Dtos.Order
     {
         public OrderType Type { get; set; }
         public string DeliveryAddress { get; set; }
-        public string Notes { get; set; }
-        // login etmyibse
+        public string Notes { get; set; }        
         public string GuestName { get; set; }
         public string GuestPhone { get; set; }
         public string GuestEmail { get; set; }

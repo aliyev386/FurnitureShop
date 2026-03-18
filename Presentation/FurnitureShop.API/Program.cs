@@ -1,4 +1,7 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using FurnitureShop.Application.Services.Abstracts;
+using FurnitureShop.Application.Validation.FluentValidation.Concrete;
 using FurnitureShop.Domain.Entities.Identity;
 using FurnitureShop.Infrastructure;
 using FurnitureShop.Persistence;
@@ -15,6 +18,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
 
 builder.Services
 .AddIdentity<AppUser, AppRole>()
